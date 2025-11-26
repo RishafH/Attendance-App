@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pegas_attendance_app/services/api_service.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/attendance_record.dart';
@@ -6,8 +7,12 @@ import '../models/monthly_summary.dart';
 
 enum AttendanceStatus { idle, loading, success, error }
 
+
+
 class AttendanceProvider with ChangeNotifier {
   
+  final ApiService _apiService = ApiService();
+
   List<AttendanceRecord> _attendanceRecords = [];
   AttendanceStatus _status = AttendanceStatus.idle;
   String? _errorMessage;

@@ -32,35 +32,48 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LocalizationProvider()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => AttendanceProvider()),
-      ],
-      child: Consumer<LocalizationProvider>(
-        builder: (context, localizationProvider, child) {
-          return MaterialApp.router(
-            title: 'Pegas Salary & Attendance App',
-            debugShowCheckedModeBanner: false,
-            locale: localizationProvider.locale,
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            theme: _buildSpaceTheme(),
-            darkTheme: _buildSpaceDarkTheme(),
-            themeMode: ThemeMode.dark,
-            routerConfig: _router,
-          );
-        },
-      ),
-    );
-  }
+Widget build(BuildContext context) {
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => LocalizationProvider()),
+      ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ChangeNotifierProvider(create: (_) => AttendanceProvider()),
+    ],
+    child: Consumer<LocalizationProvider>(
+      builder: (context, localizationProvider, child) {
+        return MaterialApp.router(
+          title: 'Pegas Salary & Attendance App',
+          debugShowCheckedModeBanner: false,
+          locale: localizationProvider.locale,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          theme: _buildSpaceTheme(),
+          darkTheme: _buildSpaceDarkTheme(),
+          themeMode: ThemeMode.dark,
+          routerConfig: _router,
+
+          // 📱 Add this so ALL pages stay inside a mobile-width container
+          builder: (context, child) {
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 430, // mobile app layout width
+                ),
+                child: child!,
+              ),
+            );
+          },
+        );
+      },
+    ),
+  );
+}
+
 
   ThemeData _buildSpaceTheme() {
     return ThemeData(
